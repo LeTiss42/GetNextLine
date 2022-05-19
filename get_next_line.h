@@ -6,7 +6,7 @@
 /*   By: mathis <mathis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:40:14 by mathis            #+#    #+#             */
-/*   Updated: 2022/04/27 23:25:59 by mathis           ###   ########.fr       */
+/*   Updated: 2022/05/17 03:52:55 by mathis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # endif
 
 size_t	gnl_strlen(char *s);
+void	*gnl_calloc(size_t count, size_t size);
 char	*get_next_line(int fd);
 char	*gnl_join(char *s1, char *s2);
 

@@ -6,7 +6,7 @@
 /*   By: mathis <mathis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:41:24 by mathis            #+#    #+#             */
-/*   Updated: 2022/05/03 23:04:47 by mathis           ###   ########.fr       */
+/*   Updated: 2022/05/18 13:19:48 by mathis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,30 @@ size_t	gnl_strlen(char *s)
 	return (i);
 }
 
+void	*gnl_calloc(size_t count, size_t size)
+{
+	size_t	tot;
+	void	*res;
+	size_t	i;
+
+	i = 0;
+	tot = count * size;
+	res = malloc(tot);
+	if (res == 0)
+		return (0);
+	if (tot > 2147483647)
+		return (0);
+	while (i < tot)
+		((char *)res)[i++] = 0;
+	return (res);
+}
+
 char	*gnl_join(char *s1, char *s2)
 {
 	char	*res;
 	size_t	i;
 	size_t	j;
 
-	if (s1 == NULL && s2 == NULL)
-		return (NULL);
-	else if (s2 == NULL)
-		return ((char *)s1);
 	i = 0;
 	j = 0;
 	res = malloc(gnl_strlen(s1) + gnl_strlen(s2) + 1);
@@ -48,5 +62,6 @@ char	*gnl_join(char *s1, char *s2)
 		j++;
 	}
 	res[i + j] = 0;
+	free(s1);
 	return (res);
 }
