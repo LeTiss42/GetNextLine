@@ -6,7 +6,7 @@
 /*   By: mathis <mathis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:41:24 by mathis            #+#    #+#             */
-/*   Updated: 2022/05/18 13:19:48 by mathis           ###   ########.fr       */
+/*   Updated: 2022/05/24 02:26:44 by mathis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,19 @@ size_t	gnl_strlen(char *s)
 	size_t	i;
 
 	i = 0;
+	if (!s)
+		return (0);
 	while (s[i])
+		i++;
+	return (i);
+}
+
+size_t	gnl_lento(char *s, char x)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i] && s[i] != x)
 		i++;
 	return (i);
 }
@@ -63,5 +75,6 @@ char	*gnl_join(char *s1, char *s2)
 	}
 	res[i + j] = 0;
 	free(s1);
+	s1 = NULL;
 	return (res);
 }
