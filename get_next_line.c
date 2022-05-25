@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: mathis <mathis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/03/09 18:40:50 by mathis            #+#    #+#             */
-/*   Updated: 2022/05/24 02:21:46 by mathis           ###   ########.fr       */
+/*   Created: 2022/05/24 13:53:59 by mathis            #+#    #+#             */
+/*   Updated: 2022/05/25 14:37:26 by mathis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,48 +15,50 @@
 char	*get_next_line(int fd)
 {
 	static char	frigo[BUFFER_SIZE + 1];
-	char		buff[BUFFER_SIZE + 1];
 	char		*res;
 
 	if (fd < 0 || BUFFER_SIZE < 1 || (read(fd, 0, 0) != 0))
 		return (NULL);
 	res = gnl_calloc(1, sizeof(char));
-	buff[read(fd, buff, BUFFER_SIZE)] = 0;
-	printf("buff 1 =%s\nfrigo 1 =%s\n", buff, frigo);
-	if (gnl_strlen(buff) == 0 && gnl_strlen(frigo) == 0)
+	if (gnl_strlen(frigo) != 0)
+		res = vide_frigo(res, frigo);
+	if (gnl_strlen(frigo) == 0)
+		frigo[read(fd, frigo, BUFFER_SIZE)] = 0;
+	if (gnl_strlen(frigo) == 0)
 		return (NULL);
-	while (gnl_lento(res, '\n') > gnl_strlen(res))
-		res = gnl_cutpaste(res, buff, frigo);
-	printf("res =%s\n", res);
-	printf("frigo =%s\n", frigo);
+	while (!gnl_ischr(res, '\n') && gnl_strlen(frigo) > 0)
+	{
+		res = vide_frigo(res, frigo);
+		if (gnl_strlen(frigo) == 0)
+			frigo[read(fd, frigo, BUFFER_SIZE)] = 0;
+	}
 	return (res);
 }
 
-char	*gnl_cutpaste(char *s1, char *buff, char *frigo)
+char	*vide_frigo(char *res, char *frigo)
 {
-	char		*res;
-	int			i;
-	int			j;
+	char	*buff;
+	size_t	i;
+	size_t	j;
 
 	i = -1;
 	j = -1;
-	res = malloc(gnl_strlen(s1) + gnl_lento(buff, '\n') + 1);
-	while (s1[++i])
-		res[i] = s1[i];
-	while (buff[++j] && buff[j] != '\n')
-		res [i + j] = buff[j];
-	if (buff[j] == '\n')
-	{
-		res [i + j] = '\n';
-		res [i + j + 1] = 0;
-		i = 0;
-		while (buff[j])
-			frigo[i++] = buff[j++];
-	}
+	buff = malloc(gnl_strlen(res) + gnl_lento(frigo, '\n') + 1);
+	if (!buff)
+		return (0);
+	while (res[++i])
+		buff[i] = res[i];
+	while (frigo[++j] != '\n' && frigo[j])
+		buff[i + j] = frigo[j];
+	if (frigo[j] == '\n')
+		buff[i + j++] = '\n';
+	i = 0;
+	while (frigo[j])
+		frigo[i++] = frigo[j++];
 	frigo[i] = 0;
-	free (s1);
-	s1 = NULL;
-	return (res);
+	free(res);
+	res = NULL;
+	return (buff);
 }
 
 #include <fcntl.h>
@@ -66,11 +68,15 @@ int	main(void)
 	int		fd1;
 
 	fd1 = open("text.txt", O_RDONLY);
-	printf("<<%s>>\n", get_next_line(fd1));
-	printf("<<%s>>\n", get_next_line(fd1));
-	//printf("<<%s>>\n", get_next_line(fd1));
-	//printf("<<%s>>\n", get_next_line(fd1));
-	//printf("<<%s>>\n", get_next_line(fd1));
-	//printf("<<%s>>\n", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+	printf("<<%s", get_next_line(fd1));
+
 	return (1);
 }

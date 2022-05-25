@@ -6,11 +6,25 @@
 /*   By: mathis <mathis@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/09 18:41:24 by mathis            #+#    #+#             */
-/*   Updated: 2022/05/24 02:26:44 by mathis           ###   ########.fr       */
+/*   Updated: 2022/05/24 20:22:39 by mathis           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+int	gnl_ischr(char *s, char x)
+{
+	size_t	i;
+
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == x)
+			return (1);
+		i++;
+	}
+	return (0);
+}
 
 size_t	gnl_strlen(char *s)
 {
@@ -24,12 +38,14 @@ size_t	gnl_strlen(char *s)
 	return (i);
 }
 
-size_t	gnl_lento(char *s, char x)
+int	gnl_lento(char *s, char x)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (s[i] && s[i] != x)
+	if (!s)
+		return (0);
+	while (s[i] != x && s[i])
 		i++;
 	return (i);
 }
