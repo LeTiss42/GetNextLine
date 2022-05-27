@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mathis <mathis@student.42.fr>              +#+  +:+       +#+        */
+/*   By: mravera <mravera@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/24 13:53:59 by mathis            #+#    #+#             */
-/*   Updated: 2022/05/25 14:37:26 by mathis           ###   ########.fr       */
+/*   Updated: 2022/05/27 18:02:09 by mravera          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	*get_next_line(int fd)
 		res = vide_frigo(res, frigo);
 	if (gnl_strlen(frigo) == 0)
 		frigo[read(fd, frigo, BUFFER_SIZE)] = 0;
-	if (gnl_strlen(frigo) == 0)
+	if (gnl_strlen(frigo) == 0 && gnl_strlen(res) == 0)
 		return (NULL);
 	while (!gnl_ischr(res, '\n') && gnl_strlen(frigo) > 0)
 	{
@@ -43,15 +43,16 @@ char	*vide_frigo(char *res, char *frigo)
 
 	i = -1;
 	j = -1;
-	buff = malloc(gnl_strlen(res) + gnl_lento(frigo, '\n') + 1);
+	buff = malloc(gnl_strlen(res) + gnl_lento(frigo, '\n') + 2);
 	if (!buff)
 		return (0);
 	while (res[++i])
 		buff[i] = res[i];
-	while (frigo[++j] != '\n' && frigo[j])
+	while (frigo[++j] != '\n' && frigo[j] != '\0')
 		buff[i + j] = frigo[j];
 	if (frigo[j] == '\n')
 		buff[i + j++] = '\n';
+	buff[i + j] = 0;
 	i = 0;
 	while (frigo[j])
 		frigo[i++] = frigo[j++];
@@ -67,7 +68,7 @@ int	main(void)
 {
 	int		fd1;
 
-	fd1 = open("text.txt", O_RDONLY);
+	fd1 = open("text3.txt", O_RDONLY);
 	printf("<<%s", get_next_line(fd1));
 	printf("<<%s", get_next_line(fd1));
 	printf("<<%s", get_next_line(fd1));
